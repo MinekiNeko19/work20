@@ -51,7 +51,7 @@ int client_handshake(int *to_server) {
   mkfifo(ACK,0644);
   printf("1. client creates secret pipe\n");
 
-  int ctos = open("WKP", O_WRONLY);
+  int ctos = open(WKP, O_WRONLY);
   write(ctos, ACK, sizeof(ACK));
   printf("2. client sends name of SP to server\n");
 
