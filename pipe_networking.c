@@ -19,10 +19,16 @@ int server_handshake(int *to_client) {
   int ctos = open(WKP, O_RDONLY);
   char sp[sizeof(ACK)];
   read(ctos, sp, sizeof(ACK));
-  printf("from client through WKP: %s\n", sp);
-  // remove(WKP);
+  printf("4. server recieves from client through WKP: %s\n", sp);
+  remove(WKP);
 
+  char sc[] = "from server";
   int stoc = open(ACK, O_WRONLY);
+  write(stoc,sc,10);
+
+  char final[10];
+  read(ctos, final, 10);
+  printf("final message from client: %s\n", final);
 
   return from_client;
 }
@@ -55,5 +61,12 @@ int client_handshake(int *to_server) {
   write(ctos, ACK, sizeof(ACK));
   printf("2. client sends name of SP to server\n");
 
-  return from_server;
+  int stoc = open(ACK, O_RDONLY);
+  char sc[11];
+  read(stoc, sc, 11);
+  printf("6. client got from server: %s\n", sc);
+  remove(ACK);
+
+  write(ctos, "from clie\n",10);
+    return from_server;
 }
