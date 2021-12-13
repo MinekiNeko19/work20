@@ -1,6 +1,5 @@
 #include "pipe_networking.h"
 
-
 /*=========================
   server_handshake
   args: int * to_client
@@ -22,25 +21,16 @@ int server_handshake(int *to_client) {
   printf("4. server recieves from client through WKP: %s\n", sp);
   remove(WKP);
 
-  char sc[] = "from server";
   int stoc = open(ACK, O_WRONLY);
-  write(stoc,sc,10);
+  write(stoc,"from server",10);
+  printf("5. server sent response to client\n");
 
   char final[10];
   read(ctos, final, 10);
-  printf("final message from client: %s\n", final);
+  printf("7. final message from client: %s\n", final);
 
   return from_client;
 }
-
-// 0. server creates a well known pipe (WKP) and waits for a connection
-// 1. client creates a secret pipe
-// 2. client sends SP name to server
-// 3. client waits for a response
-// 4. server receives client message; removes the WKP
-// 5. server sends a response to client
-// 6. client gets a response; removes SP
-// 7. client sends final response
 
 /*=========================
   client_handshake
@@ -62,6 +52,8 @@ int client_handshake(int *to_server) {
   printf("2. client sends name of SP to server\n");
 
   int stoc = open(ACK, O_RDONLY);
+  printf("3. client waiting for response\n");
+  
   char sc[11];
   read(stoc, sc, 11);
   printf("6. client got from server: %s\n", sc);
